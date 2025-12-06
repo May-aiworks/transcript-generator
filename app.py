@@ -70,7 +70,7 @@ def split_audio_with_ffmpeg(input_file, chunk_length_minutes=10, output_dir='aud
     status_text.text("✅ 音檔切割完成！")
     return chunk_files
 
-def transcribe_chunk_with_context(client, audio_file_path, chunk_number, system_instruction, previous_transcript=""):
+def transcribe_chunk_with_context(client, audio_file_path, chunk_number, system_instruction, model_name, previous_transcript=""):
     """轉錄單一片段"""
     with open(audio_file_path, 'rb') as f:
         audio_bytes = f.read()
@@ -96,7 +96,7 @@ def transcribe_chunk_with_context(client, audio_file_path, chunk_number, system_
     for attempt in range(max_retries):
         try:
             response = client.models.generate_content(
-                model='gemini-2.5-pro',
+                model=model_name,
                 contents=[
                     {
                         'parts': [
@@ -145,6 +145,14 @@ def main():
             help="請輸入你的 Google Gemini API Key"
         )
         
+        # 模型選擇
+        model_choice = st.selectbox(
+            "選擇 AI 模型",
+            options=["gemini-2.5-pro", "gemini-2.5-flash"],
+            index=0,
+            help="Pro 模型更準確但較慢，Flash 模型較快但可能稍不準確"
+        )
+
         # 切割長度設定
         chunk_length = st.slider(
             "音檔切割長度（分鐘）",
@@ -215,7 +223,7 @@ def main():
         st.markdown("**受訪者**")
         interviewees = st.text_area(
             "受訪者列表",
-            placeholder="每行一位，格式：職稱 - 姓名（性別）\n例如：\n稽核處 - 王孝勤（男性）\n法令遵循處 - 林宛亭（女性）",
+            placeholder="每行一位，格式：職稱 - 姓名\n例如：\n公關處 - 王大明\n市場部 - 林小美",
             height=150,
             help="請依照格式輸入受訪者資訊"
         )
@@ -224,7 +232,7 @@ def main():
         st.markdown("**訪談者**")
         interviewers = st.text_area(
             "訪談者列表",
-            placeholder="每行一位，格式：角色 - 姓名（性別）\n例如：\n主訪 - 陳宣諭（女性）\n副訪 - 許芳慈（女性）",
+            placeholder="每行一位，格式：角色 - 姓名\n例如：\n主訪 - 陳宣諭\n副訪 - 許芳慈",
             height=150,
             help="請依照格式輸入訪談者資訊"
         )
@@ -232,8 +240,8 @@ def main():
     # 額外的講者特徵說明
     with st.expander("🎤 講者特徵補充說明（選填）"):
         speaker_characteristics = st.text_area(
-            "描述講者的聲音特徵或說話習慣",
-            placeholder="例如：\n- 陳宣諭：聲音偏扁，喜歡說「對對對」、「OK, OK」\n- 許芳慈：聲音溫柔，講話速度較慢\n- 王孝勤：線上參與，音質可能較差",
+            "描述講者的聲音特徵、性別或說話習慣",
+            placeholder="例如：\n- 陳宣諭：女性，聲音較扁，常說「對對對」、「OK, OK」、「了解」\n- 許芳慈：女性，聲音溫柔，語速較慢\n- xxx：男性，線上參與，音質可能較差",
             height=120
         )
     
@@ -355,10 +363,11 @@ def main():
                 status_text.text(f"正在轉錄片段 {i}/{total_chunks}...")
                 
                 transcript = transcribe_chunk_with_context(
-                    client, 
-                    chunk_file, 
-                    i, 
-                    system_instruction, 
+                    client,
+                    chunk_file,
+                    i,
+                    system_instruction,
+                    model_choice,
                     accumulated_transcript
                 )
                 
