@@ -6,7 +6,7 @@
 
 - 🎙️ 支援 MP3 音檔上傳
 - ✂️ 自動切割長音檔
-- 🤖 使用 Google Gemini 2.5 Pro 進行轉錄
+- 🤖 使用 Google Gemini 2.5 Pro 以及 2.5 flash 進行轉錄
 - 📝 保持講者命名一致性
 - 💾 可下載 Markdown 格式逐字稿
 - 📋 支援會議紀錄上傳以提高準確度
@@ -42,6 +42,8 @@ streamlit run app.py
 
 應用會在 `http://localhost:8501` 開啟
 
+$\;$
+
 ## 部署到 Streamlit Community Cloud
 
 ### 步驟 1：準備 GitHub Repository
@@ -70,11 +72,12 @@ streamlit run app.py
 
 ## 使用方式
 
-1. **輸入 API Key**：在側邊欄輸入你的 Gemini API Key
-2. **上傳音檔**：上傳要轉錄的 MP3 檔案
-3. **設定參數**：調整切割長度和系統指令（可選）
-4. **開始轉錄**：點擊「開始轉錄」按鈕
-5. **下載結果**：轉錄完成後下載 Markdown 格式的逐字稿
+1. 選擇欲使用的模型
+2. **輸入 API Key**：在側邊欄輸入你的 Gemini API Key
+3. **上傳音檔**：上傳要轉錄的 MP3 檔案
+4. **設定參數**：調整切割長度和系統指令（可選）
+5. **開始轉錄**：點擊「開始轉錄」按鈕
+6. **下載結果**：轉錄完成後下載 Markdown 格式的逐字稿
 
 ## 取得 Gemini API Key
 

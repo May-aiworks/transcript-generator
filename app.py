@@ -165,12 +165,13 @@ def main():
         st.markdown("---")
         st.markdown("### 📋 使用說明")
         st.markdown("""
-        1. 輸入你的 Gemini API Key
-        2. 上傳音檔（必填）
-        3. 上傳或輸入訪談紀錄（選填）
-        4. 設定與會人員資訊
-        5. 調整切割長度（可選）
-        6. 點擊「開始轉錄」
+        1. 選擇欲使用的模型
+        2. 輸入你的 Gemini API Key
+        3. 上傳音檔（必填）
+        4. 上傳或輸入訪談紀錄（選填）
+        5. 設定與會人員資訊
+        6. 調整切割長度（可選）
+        7. 點擊「開始轉錄」
         """)
     
     # 主要區域
@@ -276,11 +277,11 @@ def main():
         
         # 基本轉錄要求
         base_instruction += """**轉錄要求：**
-1. 根據聲音特徵和對話內容辨識說話者
-2. 使用格式：「說話者姓名: 對話內容」
-3. 不要加上時間戳記
-4. 保持講者命名的一致性
-"""
+            1. 根據聲音特徵和對話內容辨識說話者
+            2. 使用格式：「說話者姓名: 對話內容」
+            3. 不要加上時間戳記
+            4. 保持講者命名的一致性
+            """
         return base_instruction
     
     # 顯示自動生成的系統指令
@@ -333,11 +334,11 @@ def main():
             if meeting_notes:
                 system_instruction = f"""你是一個專業的逐字稿轉錄助手。請使用繁體中文進行回覆。
 
-**訪談背景資訊：**
-{meeting_notes}
+                    **訪談背景資訊：**
+                    {meeting_notes}
 
-{system_instruction}
-"""
+                    {system_instruction}
+                    """
             
             # 建立客戶端
             client = genai.Client(api_key=api_key)
@@ -406,12 +407,12 @@ def main():
             # 產生完整逐字稿
             final_output = f"""# 訪談逐字稿
 
-**轉錄時間：** {time.strftime('%Y年%m月%d日 %H:%M:%S')}
+                **轉錄時間：** {time.strftime('%Y年%m月%d日 %H:%M:%S')}
 
----
+                ---
 
-{full_transcript}
-"""
+                {full_transcript}
+                """
             
             st.download_button(
                 label="📄 下載完整逐字稿 (Markdown)",
