@@ -242,7 +242,7 @@ def main():
     with st.expander("🎤 講者特徵補充說明（選填）"):
         speaker_characteristics = st.text_area(
             "描述講者的聲音特徵、性別或說話習慣",
-            placeholder="例如：\n- 陳宣諭：女性，聲音較扁，常說「對對對」、「OK, OK」、「了解」\n- 許芳慈：女性，聲音溫柔，語速較慢\n- xxx：男性，線上參與，音質可能較差",
+            placeholder="例如：\n- 宋雨琦：女性，聲音較宏亮，常說「對對對」、「OK, OK」、「了解」\n- 李知恩：女性，聲音溫柔，語速較慢\n- xxx：男性，線上參與，音質可能較差",
             height=120
         )
     
